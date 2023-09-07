@@ -1,0 +1,125 @@
+﻿@model IEnumerable<SmartFactory_MinProject.Models.Codeboard>
+
+@{
+	ViewData["Title"] = "Index";
+	var sortedModel = Model.OrderByDescending(item => item.Id);
+	var today = DateTime.Now.Date;
+	var tenDaysAgo = today.AddDays(-10);
+
+	// 최근 10일
+	var recentData = Model.Where(item => item.Date >= tenDaysAgo && item.Date <= today).ToList();
+
+	// Date를 중복 없이 최근 10개까지 추출하고 내림차순 정렬
+	var recentDates = recentData.Select(item => item.Date).Distinct().OrderBy(date => date).Take(10).ToList();
+
+	// Name으로 개시글 갯수를 그룹화하고 날짜별로 내림차순 정렬
+	var groupedData = recentData
+							.GroupBy(item => item.Name) // Name으로 그룹화
+							.OrderBy(group => group.Key) // Name으로 정렬
+							.ToList();
+
+	// 차트 데이터 생성
+	var labels = recentDates.Select(date => date.ToString("yyyy-MM-dd")).ToArray();
+	var datasets = new List<object>();
+
+	foreach (var group in groupedData)
+	{
+		var data = recentDates.Select(date => group.Count(item => item.Date == date)).ToArray();
+		var Color = $"rgba({new Random().Next(0, 255)}, {new Random().Next(0, 255)}, {new Random().Next(0, 255)}, 0.2)";
+		//var backgroundColor = $"rgba({new Random().Next(0, 255)}, {new Random().Next(0, 255)}, {new Random().Next(0, 255)}, 0.2)";
+		//var borderColor = $"rgba({new Random().Next(0, 255)}, {new Random().Next(0, 255)}, {new Random().Next(0, 255)}, 1)";
+
+		datasets.Add(new
+		{
+			label = group.Key, // Name을 범례 제목으로 사용
+			data = data, // 데이터 배열
+			backgroundColor = Color,
+			borderColor = Color,
+			borderWidth = 1,
+			stack = "Stack 1" // 스택 이름 지정
+		});
+	}
+}
+
+<a asp-controller="Home" class="btn btn-outline-danger" style="float:right" asp-action="Logout">Logout</a><br /><br />
+<title>@ViewData["Title"]</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+
+<div>
+	<h1>Post Chart</h1>
+
+	<canvas id="myChart" width="400" height="50"></canvas>
+
+	<script>
+		var chartArea = document.getElementById('myChart').getContext('2d');
+		var myChart = new Chart(chartArea, {
+			type: 'bar',
+			data: {
+				labels: @Html.Raw(Json.Serialize(labels)), // 날짜 레이블 배열
+				datasets: @Html.Raw(Json.Serialize(datasets)) // 데이터셋 배열
+															},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				},
+				plugins: {
+					legend: {
+						display: true,
+						position: 'top', // 범례 위치 (top, bottom, left, right 중 선택)
+						labels: {
+							font: {
+								size: 16 // 범례 텍스트 크기 설정
+							}
+						}
+					}
+				}
+			}
+		});
+</script>
+
+<br /><hr />
+
+<!---검색창---->
+<form asp-controller="Home" asp-action="Index" method="get">
+	<div class="row justify-content-between">
+		<div class="col-sm-auto">
+			<a asp-action="Create" class="btn btn-outline-success">Create New</a>
+		</div>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<input type="text" class="form-control" name="searchTerm" placeholder="Insert search keyword" />
+				<button type="submit" class="btn btn-primary">Search</button>
+			</div>
+		</div>
+	</div>
+</form><br />
+
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Name</th>
+			<th>Date</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in sortedModel)
+		{
+			<tr>
+				<td>@item.Title</td>
+				<td>@item.Name</td>
+				<td>@item.Date.ToString("yyyy-MM-dd")</td>
+				<td style="text-align: right;">
+									<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-success">Edit</a> |
+								<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+				</td>
+			</tr>
+		}
+		</tbody>
+</table>
+</div>

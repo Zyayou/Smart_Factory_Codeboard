@@ -1,0 +1,67 @@
+﻿@model User
+
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+<div class="text-center">
+    <h1>LOGIN</h1> <br />
+</div>
+
+<h2>@ViewBag.MySession</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        @{
+            if (ViewBag.Message != null)
+            {
+                <p style="color:red">@ViewBag.Message</p>
+            }
+        }
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AccountId" class="control-label">ID</label>
+                <input asp-for="AccountId" class="form-control" />
+                <span asp-validation-for="AccountId" class="text-danger"></span>
+            </div><br />
+            <div class="form-group">
+                <label asp-for="AccountPassword" class="control-label">Password</label>
+                <input asp-for="AccountPassword" class="form-control" type="password"/>
+                <span asp-validation-for="AccountPassword" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group text-center">
+                <input type="submit" value="LOGIN" class="btn btn-primary" />
+                <a asp-action="Register" class="btn btn-outline-primary">SIGN IN</a>
+            </div>
+            <div class="form-group text-center">
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+@*
+<div class="d-flex justify-content-center">
+    <div class="row col-sm-3">
+        <form asp-controller="Home" asp-action="Login" method="post" id="login-form">
+            <input type="text" name="Id" id="Id-field" class="login-form-field" placeholder="ID">
+            <span asp-validation-for="Id" class="text-danger"></span>
+
+            <input type="Password" name="Password" id="Password-field"
+                   class="login-form-field" placeholder="Password">
+            <span asp-validation-for="Password" class="text-danger"></span> <br />
+
+            <input type="submit" value="Login" id="login-form-submit">
+        </form>
+    </div>
+</div>
+*@

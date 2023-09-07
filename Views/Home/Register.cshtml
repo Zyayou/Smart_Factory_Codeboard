@@ -1,0 +1,41 @@
+﻿@model SmartFactory_MinProject.Models.User
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="text-center">
+    <h1>SIGN IN</h1> <br />
+</div>
+
+@*<h4>User</h4>*@
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AccountId" class="control-label">ID</label>
+                <input asp-for="AccountId" class="form-control" />
+                <span asp-validation-for="AccountId" class="text-danger"></span>
+                <label class="message-box">@ViewBag.Message</label>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountPassword" class="control-label">Password</label>
+                <input asp-for="AccountPassword" class="form-control"/>
+                <span asp-validation-for="AccountPassword" class="text-danger"></span>
+            </div><br />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group text-center">
+                <input type="submit" value="SIGN IN" class="btn btn-outline-primary" />
+                <a asp-action="Index" class="btn btn-outline-dark">CANCLE</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,145 @@
+﻿@model SmartFactory_MinProject.Models.Codeboard
+
+@{
+    ViewData["Title"] = "Details";
+}
+<!-- highlight.js 스타일 및 스크립트 추가 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/dracula.min.css"> <!-- 다크 모드 스타일 -->
+*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<!-- 스타일 추가 (코드 박스 내 다크 모드 스타일) -->
+<style>
+    /* 댓글과 댓글 사이의 구분선 스타일 */
+    ul.comment-list li {
+        border-bottom: 1px solid #ccc; /* 구분선 스타일 지정 */
+        padding: 15px 0; /* 위아래 여백 추가 */
+    }
+
+    .mode-toggle-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+</style>
+
+<h1>Details</h1>
+
+<div>
+    <div style="float:right">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-success">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-dark">Cancel</a>
+
+    </div>
+    <h4 class="float:left;">Codeboard</h4>
+    <hr />
+</div>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <code id="" href="/css/dracula.css"></code>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Date.ToString("yyyy-MM-dd")
+        </dd>
+        <dt class="col-sm-2">
+            Code Contents
+        </dt>
+        <dd class="col-sm-10">
+            <!-- 코드박스를 표시하는 부분 -->
+            <pre id="content">
+                @Html.Raw(Model.Contents)
+            </pre>
+        </dd>
+        
+    </dl>
+
+</div>
+
+<div>
+    <h3>Comment</h3>
+    <form asp-action="AddComment" asp-route-id="@Model.Id" method="post">
+        <div class="form-group">
+
+            <textarea class="form-control" id="commentContent" name="Content" rows="3"></textarea>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<p></p>
+<!-- 댓글 목록 -->
+@if (Model.Comments != null)
+{
+    <ul class="comment-list">
+        <!-- 댓글 목록에 클래스 추가 -->
+        @foreach (var comment in Model.Comments)
+        {
+            <li class="comment-item">
+                <!-- 댓글 아이템에 클래스 추가 -->
+                <strong>@comment.Date.ToString("yyyy-MM-dd")</strong>
+                <br>
+                <a style="float:right" href="#" class="btn btn-outline-danger" onclick="deleteComment(@comment.Id)">Delete</a>
+                @comment.Content 
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>댓글이 없습니다.</p>
+}
+<div class=topBtn onclick="window.scrollTo(0,0);" style="float:right;">TOP</div>
+
+<script>
+    // 코드 언어 자동 감지 설정
+    document.addEventListener("DOMContentLoaded", function () {
+        var contents = document.querySelectorAll("#content code");
+        contents.forEach(function (block) {
+            hljs.highlightBlock(block);
+        });
+    });
+
+    // 다크/라이트 모드 토글 함수
+    function toggleDarkMode() {
+        var contents = $("code[id*='codeBlock']");
+        contents.toggleClass("dark");
+        contents.children().toggleClass("dark");
+    }
+
+    // 댓글 삭제 함수
+    function deleteComment(commentId) {
+        if (confirm("댓글을 삭제하시겠습니까?")) {
+            $.ajax({
+                url: "@Url.Action("DeleteComment", "Home")", // 댓글 삭제 액션 메서드 경로
+                type: "POST",
+                data: { commentId: commentId }, // 댓글 ID를 서버로 전송
+                success: function () {
+                    // 댓글 삭제 후 페이지 새로고침 또는 다른 동작을 수행할 수 있습니다.
+                    location.reload(); // 페이지 새로고침
+                }
+            });
+        }
+    }
+</script>
+
+<!-- 모드 전환 버튼 -->
+<button class="mode-toggle-button" onclick="toggleDarkMode()">모드 전환</button>

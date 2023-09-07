@@ -1,0 +1,77 @@
+﻿@model SmartFactory_MinProject.Models.Codeboard
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+<div class="row">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div style="float:right">
+            <input type="submit" value="Create" class="btn btn-outline-success" /> 
+            <a asp-action="Index" class="btn btn-outline-dark">Cancle</a>
+        </div>
+        <div>
+            <h4 class="float:left;">Codeboard</h4>
+            <hr />
+        </div>
+        
+        <div class="form-group col-md-5" style='float:right;'>
+            <div class="input-group">
+                <input type="hidden" asp-for="Name" class="form-control " value="@ViewBag.MySession" />
+            </div>
+            <span asp-validation-for="Name" class="text-danger" ></span>
+        </div>
+        
+        <div class="form-group col-md-12">
+            <div class="input-group">
+                <div class="input-group-text">&nbsp;&nbsp;&nbsp;Title&nbsp;&nbsp;&nbsp;</div>
+                <input asp-for="Title" class="form-control" />
+            </div>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        
+        <br />
+
+        <div class="form-group col-md-12">
+            <div class="input-group">
+                <div class="input-group-text">Contents</div>
+                <textarea id="codeBoxes" asp-for="Contents" class="form-control" rows="15"></textarea>
+            </div>
+            <span asp-validation-for="Contents" class="text-danger"></span>
+        </div>
+        <br />
+        <button type="button" class="btn btn-outline-primary" onclick="addCodeBox()">Add Code Box</button>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <!-- highlight.js 스타일 및 스크립트 추가 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/dracula.min.css"> *@<!-- 다크 모드 스타일 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+
+    <script>
+        var codeBoxCount = 1; // 코드박스의 고유 ID를 추적하기 위한 변수
+
+        function addCodeBox() {
+            var codeBoxes = document.getElementById("codeBoxes");
+
+            // 코드박스의 HTML 코드 생성
+            var codeBoxHtml = `<pre><code id="codeBlock${codeBoxCount}">\n내용을 여기에 입력하세요\n</code></pre>\n`;
+
+            // 코드박스를 textarea에 추가
+            codeBoxes.value += codeBoxHtml;
+
+            // 코드 언어 자동 감지 설정
+            var codeBlock = document.getElementById(`codeBlock${codeBoxCount}`);
+            hljs.highlightBlock(codeBlock);
+
+            codeBoxCount++; // 다음 코드박스를 위해 고유 ID 증가
+        }
+    </script>
+}
