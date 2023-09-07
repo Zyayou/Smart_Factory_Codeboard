@@ -1,0 +1,176 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.code-box {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.my-code {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #333;
+}
+
+#main-holder {
+    width: 50%;
+    height: 70%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 7px;
+    box-shadow: 0px 0px 5px 2px black;
+}
+
+#login-error-msg-holder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+#login-error-msg {
+    width: 23%;
+    text-align: center;
+    margin: 0;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #8a0000;
+    border: 1px solid #8a0000;
+    background-color: #e58f8f;
+    opacity: 0;
+}
+
+#error-msg-second-line {
+    display: block;
+}
+
+#login-form {
+    align-self: flex-start;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.login-form-field::placeholder {
+    color: #3a3a3a;
+}
+
+.login-form-field {
+    border: none;
+    border-bottom: 1px solid #3a3a3a;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    outline: none;
+    padding: 0px 0px 5px 5px;
+}
+
+#login-form-submit {
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    outline: none;
+}
+
+
+
+
+
+.dark.hljs {
+    display: block;
+    overflow-x: auto;
+    
+    background: #282a36;
+}
+
+.dark.hljs-built_in,
+.dark.hljs-selector-tag,
+.dark.hljs-section,
+.dark.hljs-link {
+    color: #8be9fd;
+}
+
+.dark.hljs-keyword {
+    color: #ff79c6;
+}
+
+.dark.hljs,
+.dark.hljs-subst {
+    color: #f8f8f2;
+}
+
+.dark.hljs-title,
+.dark.hljs-attr,
+.dark.hljs-meta-keyword {
+    font-style: italic;
+    color: #50fa7b;
+}
+
+.dark.hljs-string,
+.dark.hljs-meta,
+.dark.hljs-name,
+.dark.hljs-type,
+.dark.hljs-symbol,
+.dark.hljs-bullet,
+.dark.hljs-addition,
+.dark.hljs-variable,
+.dark.hljs-template-tag,
+.dark.hljs-template-variable {
+    color: #f1fa8c;
+}
+
+.dark.hljs-comment,
+.dark.hljs-quote,
+.dark.hljs-deletion {
+    color: #6272a4;
+}
+
+.dark.hljs-keyword,
+.dark.hljs-selector-tag,
+.dark.hljs-literal,
+.dark.hljs-title,
+.dark.hljs-section,
+.dark.hljs-doctag,
+.dark.hljs-type,
+.dark.hljs-name,
+.dark.hljs-strong {
+    font-weight: bold;
+}
+
+.dark.hljs-literal,
+.dark.hljs-number {
+    color: #bd93f9;
+}
+
+.dark.hljs-emphasis {
+    font-style: italic;
+}
+
+.message-box {
+    color: #DC3545; /* 글자색을 원하는 색상으로 변경 */
+}
